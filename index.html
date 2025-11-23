@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAX | The Replica</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="scroll-line">
+    <div class="scroll-fill"></div>
+    </div>
+    <div id="preloader">
+    <div class="loader-content">
+        <div class="loader-text">SYSTEM INITIALIZING</div>
+        <div class="progress-bar"><div class="progress" id="loader-progress"></div></div>
+        <div class="loader-percent" id="loader-percent">0%</div>
+    </div>
+    </div>
+    <div class="noise-overlay"></div>
+    <nav class="navbar">
+        <div class="logo">MAX</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#on-track">On Track</a></li>
+            <li><a href="#store">Store</a></li>
+        </ul>
+    </nav>
+
+    <header id="home" class="hero snap-section">
+    
+        <div class="hero-bg night"></div>
+        <div class="hero-bg day"></div>
+
+        <div class="hero-content" style="position: relative; z-index: 10;">
+            <h1 class="glitch" data-text="No Limits" data-aos="fade-up" data-aos-duration="1000">
+                No <span class="accent">Limits</span>
+            </h1>
+            <p data-aos="fade-up" data-aos-delay="200">Defining the future of speed.</p>
+            <div data-aos="zoom-in" data-aos-delay="400">
+                <a href="#on-track" class="btn">Explore Season</a>
+            </div>
+        </div>
+
+    </header>
+
+    <section id="on-track" class="content-section snap-section">
+        
+        <div class="marquee-container">
+    <div class="marquee-text">
+        SPEED PRECISION MAX SPEED PRECISION MAX SPEED PRECISION MAX &nbsp; SPEED PRECISION MAX SPEED PRECISION MAX SPEED PRECISION MAX
+    </div>
+</div>
+
+        <div class="reveal-container">
+            <h2 class="reveal-text">On Track Stats</h2>
+        </div>
+        
+        <div class="grid">
+            <div class="card skew-elem">
+                <h3>Podiums</h3>
+                <p>Consistent performance bringing home the silverware.</p>
+            </div>
+            
+            <div class="card skew-elem">
+                <h3>Qualifying</h3>
+                <p>Pushing the car to the absolute edge on Saturdays.</p>
+            </div>
+            
+            <div class="card skew-elem">
+                <h3>Fastest Laps</h3>
+                <p>Precision driving when every millisecond counts.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="store" class="content-section snap-section" >
+        <h2 data-aos="fade-up">Official Merch</h2>
+        <p data-aos="fade-up">Get the latest team wear.</p>
+        <a href="#" class="btn" data-aos="fade-up" style="margin-top:20px;">Go to Store</a>
+    </section>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script>
+        VanillaTilt.init(document.querySelectorAll(".card"), {
+            max: 25,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.5,
+        });
+    </script>
+
+    <script>
+        const dayLayer = document.querySelector('.day');
+        const heroSection = document.querySelector('.hero');
+        let isMoving = false;
+
+        heroSection.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            dayLayer.style.setProperty('--x', x + 'px');
+            dayLayer.style.setProperty('--y', y + 'px');
+            dayLayer.style.transform = "scale(1.05)";
+            clearTimeout(isMoving);
+            isMoving = setTimeout(() => {
+                dayLayer.style.transform = "scale(1)";
+            }, 100);
+        });
+    </script>
+
+    <script>
+    const sections = document.querySelectorAll('.snap-section');
+    window.addEventListener('scroll', () => {
+        sections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            const offset = rect.top;
+            if (offset <= 0) {
+                const scrolled = Math.abs(offset);
+                const scale = 1 - (scrolled * 0.0005);
+                const opacity = 1 - (scrolled * 0.001);
+                if (scale > 0.8) {
+                    section.style.transform = `scale(${scale})`;
+                    section.style.opacity = `${opacity}`;
+                }
+            } else {
+                section.style.transform = 'scale(1)';
+                section.style.opacity = '1';
+            }
+        });
+    });
+    </script>
+
+    <script>
+    const textObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    });
+    document.querySelectorAll('.reveal-text').forEach(el => textObserver.observe(el));
+
+    const skewElements = document.querySelectorAll('.skew-elem');
+    let currentScroll = 0;
+    let previousScroll = 0;
+    let skew = 0;
+
+    function skewLoop() {
+        currentScroll = window.scrollY;
+        let speed = (currentScroll - previousScroll) * 0.15;
+        if(speed > 10) speed = 10;
+        if(speed < -10) speed = -10;
+        skewElements.forEach(el => {
+            el.style.transform = `skewY(${speed}deg)`;
+        });
+        previousScroll = currentScroll;
+        requestAnimationFrame(skewLoop);
+    }
+    skewLoop();
+    </script>
+
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <script>
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            // Small delay for the follower to create the "drag" feel
+            setTimeout(() => {
+                follower.style.left = e.clientX + 'px';
+                follower.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        // Hover effect for links and buttons
+        document.querySelectorAll('a, .btn, .card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                follower.style.transform = "translate(-50%, -50%) scale(1.8)";
+                follower.style.background = "rgba(204, 255, 0, 0.1)";
+                follower.style.borderColor = "transparent";
+            });
+            el.addEventListener('mouseleave', () => {
+                follower.style.transform = "translate(-50%, -50%) scale(1)";
+                follower.style.background = "transparent";
+                follower.style.borderColor = "rgba(204, 255, 0, 0.5)";
+            });
+        });
+
+        // PRELOADER SCRIPT
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    const progress = document.getElementById('loader-progress');
+    const percent = document.getElementById('loader-percent');
+    
+    let load = 0;
+    const interval = setInterval(() => {
+        load += Math.floor(Math.random() * 10) + 1; // Random speed
+        if (load > 100) load = 100;
+        
+        progress.style.width = load + '%';
+        percent.innerText = load + '%';
+        
+        if (load === 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 500);
+        }
+    }, 50);
+    });
+    // SCROLL PROGRESS SCRIPT
+window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.querySelector(".scroll-fill").style.height = scrolled + "%";
+});
+
+    </script>
+
+</body>
+</html>
+</body>
+</html>
